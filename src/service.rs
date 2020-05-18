@@ -1,27 +1,25 @@
 //! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
-use std::sync::Arc;
-use std::time::Duration;
-
+use cryptoindus_runtime::{self, opaque::Block, RuntimeApi};
 use sc_client_api::ExecutorProvider;
 use sc_consensus::LongestChain;
 use sc_executor::native_executor_instance;
 pub use sc_executor::NativeExecutor;
 use sc_finality_grandpa::{
-    self, FinalityProofProvider as GrandpaFinalityProofProvider, SharedVoterState,
+    FinalityProofProvider as GrandpaFinalityProofProvider, SharedVoterState,
     StorageAndProofProvider,
 };
 use sc_service::{error::Error as ServiceError, AbstractService, Configuration, ServiceBuilder};
 use sp_consensus_aura::sr25519::AuthorityPair as AuraPair;
 use sp_inherents::InherentDataProviders;
-
-use runtime::{self, opaque::Block, RuntimeApi};
+use std::sync::Arc;
+use std::time::Duration;
 
 // Our native executor instance.
 native_executor_instance!(
     pub Executor,
-    runtime::api::dispatch,
-    runtime::native_version,
+    cryptoindus_runtime::api::dispatch,
+    cryptoindus_runtime::native_version,
 );
 
 /// Starts a `ServiceBuilder` for a full service.
@@ -37,8 +35,8 @@ macro_rules! new_full_start {
         let inherent_data_providers = sp_inherents::InherentDataProviders::new();
 
         let builder = sc_service::ServiceBuilder::new_full::<
-            runtime::opaque::Block,
-            runtime::RuntimeApi,
+            cryptoindus_runtime::opaque::Block,
+            cryptoindus_runtime::RuntimeApi,
             crate::service::Executor,
         >($config)?
         .with_select_chain(|_config, backend| Ok(sc_consensus::LongestChain::new(backend.clone())))?
@@ -203,6 +201,7 @@ pub fn new_light(config: Configuration) -> Result<impl AbstractService, ServiceE
         .with_transaction_pool(|config, client, fetcher, prometheus_registry| {
             let fetcher = fetcher
                 .ok_or_else(|| "Trying to start light transaction pool without active fetcher")?;
+
             let pool_api = sc_transaction_pool::LightChainApi::new(client.clone(), fetcher.clone());
             let pool = sc_transaction_pool::BasicPool::with_revalidation_type(
                 config,

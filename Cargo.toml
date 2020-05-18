@@ -1,0 +1,39 @@
+[package]
+name = "cryptoindus"
+version = "0.1.0"
+authors = ["KhepriJin <jincxmain@outlook.com>"]
+edition = "2018"
+
+[dependencies]
+futures = "0.3.4"
+log = "0.4.8"
+structopt = "0.3.8"
+parking_lot = "0.10.0"
+
+sc-cli = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-core = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-executor = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-service = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-inherents = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-transaction-pool = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-transaction-pool = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-network = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-consensus-aura = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-consensus-aura = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-consensus = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-consensus = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-finality-grandpa = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-finality-grandpa = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-client-api = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-runtime = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sc-basic-authorship = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+
+cryptoindus-runtime = { path = "./runtime" }
+
+[build-dependencies]
+substrate-build-script-utils = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+
+[workspace]
+members = [
+    "runtime"
+]
