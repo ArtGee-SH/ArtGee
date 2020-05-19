@@ -30,11 +30,13 @@ frame-executive = { git = "https://github.com/paritytech/substrate.git", branch=
 
 pallet-aura = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-grandpa = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
-pallet-balances = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-timestamp = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-sudo = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
+
+cirml-balances = { path = "../cirml/balances", default-features = false }
+cirml-artvenus = { path = "../cirml/artvenus", default-features = false }
 
 [build-dependencies]
 wasm-builder-runner = { package = "substrate-wasm-builder-runner", git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
@@ -64,9 +66,11 @@ std = [
 
     "pallet-aura/std",
     "pallet-grandpa/std",
-    "pallet-balances/std",
     "pallet-timestamp/std",
     "pallet-sudo/std",
     "pallet-transaction-payment/std",
     "pallet-randomness-collective-flip/std",
+
+    "cirml-balances/std",
+    "cirml-artvenus/std",
 ]
