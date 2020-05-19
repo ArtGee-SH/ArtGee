@@ -1,0 +1,14 @@
+[package]
+name = "ci-primitives"
+version = "0.1.0"
+authors = ["KhepriJin <jincxmain@outlook.com>"]
+edition = "2018"
+
+[dependencies]
+sp-std = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
+
+[features]
+default = ["std"]
+std = [
+    "sp-std/std",
+]

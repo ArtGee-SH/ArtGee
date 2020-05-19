@@ -479,9 +479,31 @@ dependencies = [
 ]
 
 [[package]]
-name = "cirml-artvenus"
+name = "ci-primitives"
 version = "0.1.0"
 dependencies = [
+ "sp-std",
+]
+
+[[package]]
+name = "cirml-artists"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "serde",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "cirml-artvenuses"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cirml-artists",
  "cirml-balances",
  "frame-benchmarking",
  "frame-support",
@@ -710,7 +732,7 @@ dependencies = [
 name = "cryptoindus-runtime"
 version = "0.1.0"
 dependencies = [
- "cirml-artvenus",
+ "cirml-artvenuses",
  "cirml-balances",
  "frame-executive",
  "frame-support",
