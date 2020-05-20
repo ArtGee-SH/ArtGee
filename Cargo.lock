@@ -532,6 +532,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "cirml-market"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cirml-artists",
+ "cirml-artvenuses",
+ "cirml-balances",
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "serde",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "clang-sys"
 version = "0.29.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -734,6 +750,7 @@ version = "0.1.0"
 dependencies = [
  "cirml-artvenuses",
  "cirml-balances",
+ "cirml-market",
  "frame-executive",
  "frame-support",
  "frame-system",

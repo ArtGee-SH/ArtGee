@@ -58,6 +58,7 @@ decl_storage! {
     trait Store for Module<T: Trait> as Artists {
         pub NextArtistId get(fn next_artist_id): u32 = 0;
         pub ArtistIds get(fn artist_ids): map hasher(blake2_128_concat) T::AccountId => Option<ArtistId>;
+        pub ArtistAccounts get(fn artist_accounts): map hasher(twox_64_concat) ArtistId => Option<T::AccountId>;
         pub ArtistInfos get(fn artist_infos): map hasher(twox_64_concat) ArtistId => Option<Artist>;
 
         pub Names get(fn names): map hasher(blake2_128_concat) Text => Option<()>;
@@ -82,6 +83,7 @@ decl_module! {
             // set storage
             Names::insert(&artist.name, ());
             ArtistIds::<T>::insert(&who, artist_id);
+            ArtistAccounts::<T>::insert(&artist_id, who.clone());
             ArtistInfos::insert(artist_id, artist);
             NextArtistId::put(artist_id + 1);
 
@@ -98,6 +100,7 @@ decl_module! {
             let artist_id = Self::get_artist_id(&source)?;
 
             ArtistIds::<T>::insert(&who, artist_id);
+            ArtistAccounts::<T>::insert(&artist_id, who.clone());
 
             Self::deposit_event(RawEvent::BindArtist(who, artist_id));
             Ok(())
@@ -109,6 +112,11 @@ impl<T: Trait> Module<T> {
     pub fn get_artist_id(who: &T::AccountId) -> Result<ArtistId, DispatchError> {
         let id = Self::artist_ids(who).ok_or(Error::<T>::ArtistNotExist)?;
         Ok(id)
+    }
+
+    pub fn get_artist_account(id: ArtistId) -> Result<T::AccountId, DispatchError> {
+        let who = Self::artist_accounts(id).ok_or(Error::<T>::ArtistNotExist)?;
+        Ok(who)
     }
 
     pub fn get_artist_info(who: ArtistIdentity<T>) -> Result<Artist, DispatchError> {

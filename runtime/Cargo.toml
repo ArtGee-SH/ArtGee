@@ -37,6 +37,7 @@ pallet-randomness-collective-flip = { git = "https://github.com/paritytech/subst
 
 cirml-balances = { path = "../cirml/balances", default-features = false }
 cirml-artvenuses = { path = "../cirml/artvenuses", default-features = false }
+cirml-market = { path = "../cirml/market", default-features = false }
 
 [build-dependencies]
 wasm-builder-runner = { package = "substrate-wasm-builder-runner", git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
@@ -73,4 +74,5 @@ std = [
 
     "cirml-balances/std",
     "cirml-artvenuses/std",
+    "cirml-market/std",
 ]
