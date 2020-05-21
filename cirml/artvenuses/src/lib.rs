@@ -123,13 +123,17 @@ impl<T: Trait> Module<T> {
         Ok(v)
     }
 
-    pub fn holder_for(venus_id: ArtvenusId<T>) -> Result<(T::AccountId, u64), DispatchError> {
+    pub fn holder_info_for(venus_id: ArtvenusId<T>) -> Result<(T::AccountId, u64), DispatchError> {
         let r = Self::holder(&venus_id).ok_or(Error::<T>::HolderNotExist)?;
         Ok(r)
     }
 
+    pub fn holder_for(venus_id: ArtvenusId<T>) -> Result<T::AccountId, DispatchError> {
+        Self::holder_info_for(venus_id).map(|(a, _)| a)
+    }
+
     pub fn is_holder(venus_id: ArtvenusId<T>, who: &T::AccountId) -> Result<bool, DispatchError> {
-        let (source, _) = Self::holder_for(venus_id)?;
+        let (source, _) = Self::holder_info_for(venus_id)?;
         Ok(&source == who)
     }
 }
@@ -168,7 +172,7 @@ impl<T: Trait> Module<T> {
 
     pub fn move_artvenus(id: ArtvenusId<T>, to: &T::AccountId) -> DispatchResult {
         let _ = Self::get_artvenus(id)?;
-        let (source, source_number) = Self::holder_for(id)?;
+        let (source, source_number) = Self::holder_info_for(id)?;
         if source == *to {
             // same holder, do nothing
             return Ok(());

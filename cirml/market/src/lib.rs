@@ -38,13 +38,14 @@ decl_error! {
         ///
         NotCreaterInVirginSell,
         ///
+        NotHolderInSell,
+        ///
         CantPay,
     }
 }
 
 #[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
-pub struct SellArtvenus<AccountId, Balance, BlockNumber> {
-    seller: AccountId,
+pub struct SellArtvenus<Balance, BlockNumber> {
     price: Balance,
     time: BlockNumber,
 }
@@ -56,7 +57,7 @@ decl_storage! {
         pub NormalSellPercent get(fn normal_sell_percent) config(normal_sell_percent): Percent;
 
         pub VirginSellOut get(fn virgin_sell_out): map hasher(identity) ArtvenusId<T> => Option<()>;
-        pub OnSell get(fn on_sell): map hasher(identity) ArtvenusId<T> => Option<SellArtvenus<T::AccountId, T::Balance, T::BlockNumber>>;
+        pub OnSell get(fn on_sell): map hasher(identity) ArtvenusId<T> => Option<SellArtvenus<T::Balance, T::BlockNumber>>;
     }
 }
 
@@ -67,7 +68,7 @@ decl_module! {
         #[weight=0]
         pub fn seal(origin, venus_id: ArtvenusId<T>, #[compact] price: T::Balance) -> DispatchResult {
             let who = ensure_signed(origin)?;
-            Self::seal_impl(who, venus_id, price)?;
+            Self::sell_impl(who, venus_id, price)?;
             Ok(())
         }
 
@@ -83,31 +84,36 @@ decl_module! {
 impl<T: Trait> Module<T> {
     pub fn get_on_sell(
         venus_id: ArtvenusId<T>,
-    ) -> Result<SellArtvenus<T::AccountId, T::Balance, T::BlockNumber>, DispatchError> {
+    ) -> Result<SellArtvenus<T::Balance, T::BlockNumber>, DispatchError> {
         let sell = Self::on_sell(venus_id).ok_or(Error::<T>::NotOnSell)?;
         Ok(sell)
     }
 }
 
 impl<T: Trait> Module<T> {
-    fn seal_impl(who: T::AccountId, venus_id: ArtvenusId<T>, price: T::Balance) -> DispatchResult {
+    fn sell_impl(who: T::AccountId, venus_id: ArtvenusId<T>, price: T::Balance) -> DispatchResult {
         let artvenus: Artvenus<T> = cirml_artvenuses::Module::<T>::get_artvenus(venus_id)?;
         let artist_id = artvenus.origin;
-        let artist_account = cirml_artists::Module::<T>::get_artist_account(artist_id)?;
 
         if Self::get_on_sell(venus_id).is_ok() {
             Err(Error::<T>::AlreadyOnSell)?;
         }
         if Self::virgin_sell_out(&venus_id).is_none() {
+            // artist accountid may be changed, thus must get every time
+            let artist_account = cirml_artists::Module::<T>::get_artist_account(artist_id)?;
             // virgin sell
             if who != artist_account {
                 Err(Error::<T>::NotCreaterInVirginSell)?;
+            }
+        } else {
+            let seller = cirml_artvenuses::Module::<T>::holder_for(venus_id)?;
+            if seller != who {
+                Err(Error::<T>::NotHolderInSell)?;
             }
         }
 
         // put sell order
         let sell = SellArtvenus {
-            seller: who.clone(),
             price,
             time: system::Module::<T>::block_number(),
         };
@@ -123,7 +129,6 @@ impl<T: Trait> Module<T> {
         let artist = cirml_artists::Module::<T>::get_artist_account(venus_info.origin)?;
 
         let price = sell_info.price;
-        let from = &sell_info.seller;
         let free = cirml_balances::Module::<T>::free_balance(&buyer);
         if free < price {
             Err(Error::<T>::CantPay)?;
@@ -148,7 +153,8 @@ impl<T: Trait> Module<T> {
             VirginSellOut::<T>::insert(&venus_id, ());
             true
         } else {
-            let seller = from;
+            let seller = cirml_artvenuses::Module::<T>::holder_for(venus_id)?;
+            // normal sell
             let for_artist_percent = Self::normal_sell_percent();
             let for_artist = for_artist_percent.saturating_reciprocal_mul(price);
             let for_seller = price - for_artist;
@@ -160,6 +166,9 @@ impl<T: Trait> Module<T> {
             )?;
             false
         };
+        cirml_artvenuses::Module::<T>::move_artvenus(venus_id, &buyer)
+            .expect("move_artvenus must success");
+        OnSell::<T>::remove(&venus_id);
 
         Self::deposit_event(RawEvent::Deal(buyer, venus_id, is_virgin_sell));
         Ok(())
