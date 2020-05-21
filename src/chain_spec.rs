@@ -1,12 +1,15 @@
 use cryptoindus_runtime::{
-    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, Signature, SudoConfig,
-    SystemConfig, WASM_BINARY,
+    AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig, MarketConfig, Signature,
+    SudoConfig, SystemConfig, WASM_BINARY,
 };
 use sc_service::ChainType;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{sr25519, Pair, Public};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
-use sp_runtime::traits::{IdentifyAccount, Verify};
+use sp_runtime::{
+    traits::{IdentifyAccount, Verify},
+    Percent,
+};
 
 // Note this is the URL for the telemetry server
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -119,13 +122,20 @@ fn testnet_genesis(
                 .map(|x| (x.1.clone(), 1))
                 .collect(),
         }),
-        pallet_sudo: Some(SudoConfig { key: root_key }),
+        pallet_sudo: Some(SudoConfig {
+            key: root_key.clone(),
+        }),
         cirml_balances: Some(BalancesConfig {
             balances: endowed_accounts
                 .iter()
                 .cloned()
                 .map(|k| (k, 1 << 60))
                 .collect(),
+        }),
+        cirml_market: Some(MarketConfig {
+            manager: root_key,
+            virgin_sell_percent: Percent::from_percent(80),
+            normal_sell_percent: Percent::from_percent(2),
         }),
     }
 }

@@ -36,6 +36,7 @@ pallet-transaction-payment = { git = "https://github.com/paritytech/substrate.gi
 pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 
 cirml-balances = { path = "../cirml/balances", default-features = false }
+cirml-artists = { path = "../cirml/artists", default-features = false }
 cirml-artvenuses = { path = "../cirml/artvenuses", default-features = false }
 cirml-market = { path = "../cirml/market", default-features = false }
 
@@ -73,6 +74,7 @@ std = [
     "pallet-randomness-collective-flip/std",
 
     "cirml-balances/std",
+    "cirml-artists/std",
     "cirml-artvenuses/std",
     "cirml-market/std",
 ]

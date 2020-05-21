@@ -213,6 +213,15 @@ impl pallet_timestamp::Trait for Runtime {
     type MinimumPeriod = MinimumPeriod;
 }
 
+impl cirml_artists::Trait for Runtime {
+    type Event = Event;
+}
+
+impl cirml_artvenuses::Trait for Runtime {
+    type Hash = Hash;
+    type Event = Event;
+}
+
 parameter_types! {
     pub const ExistentialDeposit: u128 = 500;
 }
@@ -225,6 +234,10 @@ impl cirml_balances::Trait for Runtime {
     type Event = Event;
     type ExistentialDeposit = ExistentialDeposit;
     type AccountStore = System;
+}
+
+impl cirml_market::Trait for Runtime {
+    type Event = Event;
 }
 
 parameter_types! {
@@ -258,7 +271,10 @@ construct_runtime!(
         TransactionPayment: pallet_transaction_payment::{Module, Storage},
         Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
 
+        Artists: cirml_artists::{Module, Call, Storage, Event<T>},
+        Artvensuses: cirml_artvenuses::{Module, Call, Storage, Event<T>},
         Balances: cirml_balances::{Module, Call, Storage, Config<T>, Event<T>},
+        Market: cirml_market::{Module, Call, Storage, Config<T>, Event<T>},
     }
 );
 

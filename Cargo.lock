@@ -748,6 +748,7 @@ dependencies = [
 name = "cryptoindus-runtime"
 version = "0.1.0"
 dependencies = [
+ "cirml-artists",
  "cirml-artvenuses",
  "cirml-balances",
  "cirml-market",
