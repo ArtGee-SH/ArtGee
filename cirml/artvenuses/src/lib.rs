@@ -12,7 +12,8 @@ use sp_runtime::{
 use sp_std::{fmt::Debug, prelude::*};
 
 use frame_support::{
-    decl_error, decl_event, decl_module, decl_storage, IterableStorageDoubleMap, Parameter,
+    decl_error, decl_event, decl_module, decl_storage, IterableStorageDoubleMap,
+    IterableStorageMap, Parameter,
 };
 use frame_system::{self as system, ensure_signed};
 
@@ -106,12 +107,9 @@ impl<T: Trait> Module<T> {
     }
 
     pub fn artvenus_ids_for(artist_id: ArtistId) -> Vec<ArtvenusId<T>> {
-        let mut v = vec![];
-        // notice index may not be continuous
-        for (_index, id) in ArtistArtvenuses::<T>::iter_prefix(artist_id) {
-            v.push(id);
-        }
-        v
+        ArtistArtvenuses::<T>::iter_prefix(artist_id)
+            .map(|(_, id)| id)
+            .collect()
     }
 
     pub fn artvenus_for(artist_id: ArtistId) -> Result<Vec<Artvenus<T>>, DispatchError> {
@@ -191,5 +189,20 @@ impl<T: Trait> Module<T> {
 
         Self::deposit_event(RawEvent::Move(id, source, to.clone()));
         Ok(())
+    }
+}
+
+// for runtime-api
+impl<T: Trait> Module<T> {
+    pub fn artvenuses() -> Vec<ArtvenusId<T>> {
+        ArtvenusInfos::<T>::iter().map(|(id, _)| id).collect()
+    }
+
+    pub fn artvenuses_of_artist(artist_id: ArtistId) -> Vec<(u64, ArtvenusId<T>)> {
+        ArtistArtvenuses::<T>::iter_prefix(artist_id).collect()
+    }
+
+    pub fn artvenuses_of_holder(account_id: &T::AccountId) -> Vec<(u64, ArtvenusId<T>)> {
+        HolderArtvenuses::<T>::iter_prefix(account_id).collect()
     }
 }

@@ -490,6 +490,12 @@ name = "ci-rpc"
 version = "0.1.0"
 dependencies = [
  "ci-primitives",
+ "cirml-artists-rpc",
+ "cirml-artists-runtime-api",
+ "cirml-artvenuses-rpc",
+ "cirml-artvenuses-runtime-api",
+ "cirml-market-rpc",
+ "cirml-market-runtime-api",
  "cryptoindus-runtime",
  "frame-support",
  "hex",
@@ -523,6 +529,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "cirml-artists-rpc"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cirml-artists-runtime-api",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "parity-scale-codec",
+ "serde",
+ "sp-api",
+ "sp-blockchain",
+ "sp-runtime",
+]
+
+[[package]]
+name = "cirml-artists-runtime-api"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "parity-scale-codec",
+ "sp-api",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
 name = "cirml-artvenuses"
 version = "0.1.0"
 dependencies = [
@@ -535,6 +568,33 @@ dependencies = [
  "parity-scale-codec",
  "serde",
  "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "cirml-artvenuses-rpc"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cirml-artvenuses-runtime-api",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "parity-scale-codec",
+ "serde",
+ "sp-api",
+ "sp-blockchain",
+ "sp-runtime",
+]
+
+[[package]]
+name = "cirml-artvenuses-runtime-api"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "parity-scale-codec",
+ "sp-api",
  "sp-runtime",
  "sp-std",
 ]
@@ -567,6 +627,35 @@ dependencies = [
  "frame-system",
  "parity-scale-codec",
  "serde",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "cirml-market-rpc"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cirml-market-runtime-api",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "parity-scale-codec",
+ "serde",
+ "serde_json",
+ "sp-api",
+ "sp-blockchain",
+ "sp-runtime",
+]
+
+[[package]]
+name = "cirml-market-runtime-api"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cirml-market",
+ "parity-scale-codec",
+ "sp-api",
  "sp-runtime",
  "sp-std",
 ]
@@ -775,10 +864,14 @@ dependencies = [
 name = "cryptoindus-runtime"
 version = "0.1.0"
 dependencies = [
+ "ci-primitives",
  "cirml-artists",
+ "cirml-artists-runtime-api",
  "cirml-artvenuses",
+ "cirml-artvenuses-runtime-api",
  "cirml-balances",
  "cirml-market",
+ "cirml-market-runtime-api",
  "frame-executive",
  "frame-support",
  "frame-system",

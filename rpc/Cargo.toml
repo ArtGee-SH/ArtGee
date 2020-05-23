@@ -27,3 +27,10 @@ substrate-frame-rpc-system = { git = "https://github.com/paritytech/substrate.gi
 ci-primitives = { path = "../primitives" }
 cryptoindus-runtime = { path = "../runtime" }
 
+cirml-artists-runtime-api = { path = "../cirml/artists/runtime-api" }
+cirml-artists-rpc = { path = "../cirml/artists/rpc" }
+cirml-artvenuses-runtime-api = { path = "../cirml/artvenuses/runtime-api" }
+cirml-artvenuses-rpc = { path = "../cirml/artvenuses/rpc" }
+cirml-market-runtime-api = { path = "../cirml/market/runtime-api" }
+cirml-market-rpc = { path = "../cirml/market/rpc" }
+

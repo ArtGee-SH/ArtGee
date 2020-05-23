@@ -1,12 +1,17 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
+
 use codec::{Decode, Encode};
 
 use sp_runtime::{DispatchError, DispatchResult, Percent, RuntimeDebug};
+use sp_std::prelude::Vec;
 
 use frame_support::{
     decl_error, decl_event, decl_module, decl_storage,
     traits::{Currency, ExistenceRequirement::KeepAlive},
+    IterableStorageMap,
 };
 use frame_system::{self as system, ensure_signed};
 
@@ -45,7 +50,17 @@ decl_error! {
 }
 
 #[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
-pub struct SellArtvenus<Balance, BlockNumber> {
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub enum OnSellState {
+    VirginSell,
+    Sell,
+    Bidding,
+}
+
+#[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+pub struct OnSellArtvenus<Balance, BlockNumber> {
+    state: OnSellState,
     price: Balance,
     time: BlockNumber,
 }
@@ -57,7 +72,7 @@ decl_storage! {
         pub NormalSellPercent get(fn normal_sell_percent) config(normal_sell_percent): Percent;
 
         pub VirginSellOut get(fn virgin_sell_out): map hasher(identity) ArtvenusId<T> => Option<()>;
-        pub OnSell get(fn on_sell): map hasher(identity) ArtvenusId<T> => Option<SellArtvenus<T::Balance, T::BlockNumber>>;
+        pub OnSell get(fn on_sell): map hasher(identity) ArtvenusId<T> => Option<OnSellArtvenus<T::Balance, T::BlockNumber>>;
     }
 }
 
@@ -84,7 +99,7 @@ decl_module! {
 impl<T: Trait> Module<T> {
     pub fn get_on_sell(
         venus_id: ArtvenusId<T>,
-    ) -> Result<SellArtvenus<T::Balance, T::BlockNumber>, DispatchError> {
+    ) -> Result<OnSellArtvenus<T::Balance, T::BlockNumber>, DispatchError> {
         let sell = Self::on_sell(venus_id).ok_or(Error::<T>::NotOnSell)?;
         Ok(sell)
     }
@@ -98,22 +113,25 @@ impl<T: Trait> Module<T> {
         if Self::get_on_sell(venus_id).is_ok() {
             Err(Error::<T>::AlreadyOnSell)?;
         }
-        if Self::virgin_sell_out(&venus_id).is_none() {
+        let state = if Self::virgin_sell_out(&venus_id).is_none() {
             // artist accountid may be changed, thus must get every time
             let artist_account = cirml_artists::Module::<T>::get_artist_account(artist_id)?;
             // virgin sell
             if who != artist_account {
                 Err(Error::<T>::NotCreaterInVirginSell)?;
             }
+            OnSellState::VirginSell
         } else {
             let seller = cirml_artvenuses::Module::<T>::holder_for(venus_id)?;
             if seller != who {
                 Err(Error::<T>::NotHolderInSell)?;
             }
-        }
+            OnSellState::Sell
+        };
 
         // put sell order
-        let sell = SellArtvenus {
+        let sell = OnSellArtvenus {
+            state,
             price,
             time: system::Module::<T>::block_number(),
         };
@@ -172,5 +190,12 @@ impl<T: Trait> Module<T> {
 
         Self::deposit_event(RawEvent::Deal(buyer, venus_id, is_virgin_sell));
         Ok(())
+    }
+}
+
+// for runtime-api
+impl<T: Trait> Module<T> {
+    pub fn on_sell_list() -> Vec<(ArtvenusId<T>, OnSellArtvenus<T::Balance, T::BlockNumber>)> {
+        OnSell::<T>::iter().collect()
     }
 }

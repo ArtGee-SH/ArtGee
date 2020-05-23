@@ -3,8 +3,9 @@
 use codec::{Decode, Encode};
 
 use sp_runtime::{traits::StaticLookup, DispatchError, DispatchResult, RuntimeDebug};
+use sp_std::prelude::*;
 
-use frame_support::{decl_error, decl_event, decl_module, decl_storage};
+use frame_support::{decl_error, decl_event, decl_module, decl_storage, IterableStorageMap};
 use frame_system::{self as system, ensure_root, ensure_signed};
 
 use ci_primitives::{ArtistId, Text};
@@ -126,5 +127,12 @@ impl<T: Trait> Module<T> {
         };
         let artist = Self::artist_infos(artist_id).ok_or(Error::<T>::ArtistNotExist)?;
         Ok(artist)
+    }
+}
+
+// for runtime api
+impl<T: Trait> Module<T> {
+    pub fn artists() -> Vec<(ArtistId, T::AccountId)> {
+        ArtistAccounts::<T>::iter().collect()
     }
 }

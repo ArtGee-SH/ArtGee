@@ -26,6 +26,10 @@ use sp_std::prelude::*;
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 
+use pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo;
+
+use ci_primitives::ArtistId;
+
 // A few exports that help ease life for downstream crates.
 pub use cirml_balances::Call as BalancesCall;
 pub use frame_support::{
@@ -38,10 +42,12 @@ pub use frame_support::{
     StorageValue,
 };
 pub use pallet_timestamp::Call as TimestampCall;
-use pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
+
+pub use cirml_market::OnSellState;
+pub type OnSellArtvenus = cirml_market::OnSellArtvenus<Balance, BlockNumber>;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -68,6 +74,8 @@ pub type Hash = sp_core::H256;
 
 /// Digest item type.
 pub type DigestItem = generic::DigestItem<Hash>;
+
+pub type ArtvenusId = sp_core::H256;
 
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
 /// the specifics of the runtime. They can then be made to be agnostic over specific formats
@@ -219,7 +227,7 @@ impl cirml_artists::Trait for Runtime {
 }
 
 impl cirml_artvenuses::Trait for Runtime {
-    type Hash = Hash;
+    type Hash = ArtvenusId;
     type Event = Event;
 }
 
@@ -273,7 +281,7 @@ construct_runtime!(
         Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
 
         Artists: cirml_artists::{Module, Call, Storage, Event<T>},
-        Artvensuses: cirml_artvenuses::{Module, Call, Storage, Event<T>},
+        Artvenuses: cirml_artvenuses::{Module, Call, Storage, Event<T>},
         Balances: cirml_balances::{Module, Call, Storage, Config<T>, Event<T>},
         Market: cirml_market::{Module, Call, Storage, Config<T>, Event<T>},
     }
@@ -434,6 +442,45 @@ impl_runtime_apis! {
     > for Runtime {
         fn query_info(uxt: UncheckedExtrinsic, len: u32) -> RuntimeDispatchInfo<Balance> {
               TransactionPayment::query_info(uxt, len)
+        }
+    }
+
+    // cirml
+    impl cirml_artists_runtime_api::ArtistsApi<
+        Block,
+        AccountId,
+    > for Runtime {
+        fn artists() -> Vec<(ArtistId, AccountId)> {
+            Artists::artists()
+        }
+    }
+
+    impl cirml_artvenuses_runtime_api::ArtvenusesApi<
+        Block,
+        AccountId,
+        ArtvenusId,
+    > for Runtime {
+        fn artvenuses() -> Vec<ArtvenusId> {
+            Artvenuses::artvenuses()
+        }
+
+        fn artvenuses_of_artist(artist_id: ArtistId) -> Vec<(u64, ArtvenusId)> {
+            Artvenuses::artvenuses_of_artist(artist_id)
+        }
+
+        fn artvenuses_of_holder(account_id: AccountId) -> Vec<(u64, ArtvenusId)> {
+            Artvenuses::artvenuses_of_holder(&account_id)
+        }
+    }
+
+    impl cirml_market_runtime_api::MarketApi<
+        Block,
+        ArtvenusId,
+        Balance,
+        BlockNumber,
+    > for Runtime {
+        fn on_sell() -> Vec<(ArtvenusId, OnSellArtvenus)> {
+            Market::on_sell_list()
         }
     }
 }

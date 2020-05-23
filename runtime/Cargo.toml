@@ -37,10 +37,15 @@ pallet-transaction-payment = { git = "https://github.com/paritytech/substrate.gi
 pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate.git", branch = "master", default-features = false }
 pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 
+ci-primitives = { path = "../primitives", default-features = false }
+
 cirml-balances = { path = "../cirml/balances", default-features = false }
 cirml-artists = { path = "../cirml/artists", default-features = false }
+cirml-artists-runtime-api = { path = "../cirml/artists/runtime-api", default-features = false }
 cirml-artvenuses = { path = "../cirml/artvenuses", default-features = false }
+cirml-artvenuses-runtime-api = { path = "../cirml/artvenuses/runtime-api", default-features = false }
 cirml-market = { path = "../cirml/market", default-features = false }
+cirml-market-runtime-api = { path = "../cirml/market/runtime-api", default-features = false }
 
 [build-dependencies]
 wasm-builder-runner = { package = "substrate-wasm-builder-runner", git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
@@ -77,8 +82,13 @@ std = [
     "pallet-transaction-payment-rpc-runtime-api/std",
     "pallet-randomness-collective-flip/std",
 
+    "ci-primitives/std",
+
     "cirml-balances/std",
     "cirml-artists/std",
+    "cirml-artists-runtime-api/std",
     "cirml-artvenuses/std",
+    "cirml-artvenuses-runtime-api/std",
     "cirml-market/std",
+    "cirml-market-runtime-api/std",
 ]
