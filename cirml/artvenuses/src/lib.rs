@@ -79,7 +79,7 @@ decl_storage! {
             double_map hasher(twox_64_concat) ArtistId, hasher(twox_64_concat) u64 => Option<ArtvenusId<T>>;
         pub ArtistArtvenusNumbers get(fn artist_artvenus_numbers): map hasher(twox_64_concat) ArtistId => u64;
 
-        pub Holder get(fn holder): map hasher(identity) ArtvenusId<T> => Option<(T::AccountId, u64)>;
+        pub HolderOf get(fn holder_of): map hasher(identity) ArtvenusId<T> => Option<(T::AccountId, u64)>;
         pub HolderArtvenuses get(fn holder_artvenuses):
             double_map hasher(blake2_128_concat) T::AccountId, hasher(twox_64_concat) u64 => Option<ArtvenusId<T>>;
         pub HolderArtvenusNumbers get(fn holder_artvenus_numbers): map hasher(blake2_128_concat) T::AccountId => u64;
@@ -122,7 +122,7 @@ impl<T: Trait> Module<T> {
     }
 
     pub fn holder_info_for(venus_id: ArtvenusId<T>) -> Result<(T::AccountId, u64), DispatchError> {
-        let r = Self::holder(&venus_id).ok_or(Error::<T>::HolderNotExist)?;
+        let r = Self::holder_of(&venus_id).ok_or(Error::<T>::HolderNotExist)?;
         Ok(r)
     }
 
@@ -160,7 +160,7 @@ impl<T: Trait> Module<T> {
         ArtistArtvenusNumbers::insert(artist_id, number_for_artist + 1);
         // artvenus relationship init
         let number_for_holder = Self::holder_artvenus_numbers(&who);
-        Holder::<T>::insert(&id, (who.clone(), number_for_holder));
+        HolderOf::<T>::insert(&id, (who.clone(), number_for_holder));
         HolderArtvenuses::<T>::insert(&who, number_for_holder, id);
         HolderArtvenusNumbers::<T>::insert(who, number_for_holder + 1);
 
@@ -183,7 +183,7 @@ impl<T: Trait> Module<T> {
         // add new relationship for to
         HolderArtvenuses::<T>::insert(to, current_number_for_to, id);
         // override relationship
-        Holder::<T>::insert(&id, (to.clone(), current_number_for_to));
+        HolderOf::<T>::insert(&id, (to.clone(), current_number_for_to));
         // update index number for to
         HolderArtvenusNumbers::<T>::insert(to, current_number_for_to + 1);
 
