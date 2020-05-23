@@ -50,7 +50,7 @@ pub enum ArtistIdentity<'a, T: Trait> {
 }
 
 #[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
-pub struct Artist {
+pub struct ArtistInfo {
     pub name: Text,
     pub gender: Gender,
 }
@@ -60,7 +60,7 @@ decl_storage! {
         pub NextArtistId get(fn next_artist_id): u32 = 0;
         pub ArtistIds get(fn artist_ids): map hasher(blake2_128_concat) T::AccountId => Option<ArtistId>;
         pub ArtistAccounts get(fn artist_accounts): map hasher(twox_64_concat) ArtistId => Option<T::AccountId>;
-        pub ArtistInfos get(fn artist_infos): map hasher(twox_64_concat) ArtistId => Option<Artist>;
+        pub ArtistInfos get(fn artist_infos): map hasher(twox_64_concat) ArtistId => Option<ArtistInfo>;
 
         pub Names get(fn names): map hasher(blake2_128_concat) Text => Option<()>;
     }
@@ -71,7 +71,7 @@ decl_module! {
         fn deposit_event() = default;
 
         #[weight = 0]
-        pub fn regist_artist(origin, who: <T::Lookup as StaticLookup>::Source, artist: Artist) -> DispatchResult {
+        pub fn regist_artist(origin, who: <T::Lookup as StaticLookup>::Source, artist: ArtistInfo) -> DispatchResult {
             ensure_root(origin)?;
             let who = T::Lookup::lookup(who)?;
 
@@ -120,7 +120,7 @@ impl<T: Trait> Module<T> {
         Ok(who)
     }
 
-    pub fn get_artist_info(who: ArtistIdentity<T>) -> Result<Artist, DispatchError> {
+    pub fn get_artist_info(who: ArtistIdentity<T>) -> Result<ArtistInfo, DispatchError> {
         let artist_id = match who {
             ArtistIdentity::AccountId(account_id) => Self::get_artist_id(account_id)?,
             ArtistIdentity::Id(artist_id) => artist_id,

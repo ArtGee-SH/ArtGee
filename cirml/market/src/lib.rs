@@ -59,7 +59,7 @@ pub enum OnSellState {
 
 #[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub struct OnSellArtvenus<Balance, BlockNumber> {
+pub struct OnSellInfo<Balance, BlockNumber> {
     state: OnSellState,
     price: Balance,
     time: BlockNumber,
@@ -72,7 +72,7 @@ decl_storage! {
         pub NormalSellPercent get(fn normal_sell_percent) config(normal_sell_percent): Percent;
 
         pub VirginSellOut get(fn virgin_sell_out): map hasher(identity) ArtvenusId<T> => Option<()>;
-        pub OnSell get(fn on_sell): map hasher(identity) ArtvenusId<T> => Option<OnSellArtvenus<T::Balance, T::BlockNumber>>;
+        pub OnSell get(fn on_sell): map hasher(identity) ArtvenusId<T> => Option<OnSellInfo<T::Balance, T::BlockNumber>>;
     }
 }
 
@@ -99,7 +99,7 @@ decl_module! {
 impl<T: Trait> Module<T> {
     pub fn get_on_sell(
         venus_id: ArtvenusId<T>,
-    ) -> Result<OnSellArtvenus<T::Balance, T::BlockNumber>, DispatchError> {
+    ) -> Result<OnSellInfo<T::Balance, T::BlockNumber>, DispatchError> {
         let sell = Self::on_sell(venus_id).ok_or(Error::<T>::NotOnSell)?;
         Ok(sell)
     }
@@ -130,7 +130,7 @@ impl<T: Trait> Module<T> {
         };
 
         // put sell order
-        let sell = OnSellArtvenus {
+        let sell = OnSellInfo {
             state,
             price,
             time: system::Module::<T>::block_number(),
@@ -195,7 +195,7 @@ impl<T: Trait> Module<T> {
 
 // for runtime-api
 impl<T: Trait> Module<T> {
-    pub fn on_sell_list() -> Vec<(ArtvenusId<T>, OnSellArtvenus<T::Balance, T::BlockNumber>)> {
+    pub fn on_sell_list() -> Vec<(ArtvenusId<T>, OnSellInfo<T::Balance, T::BlockNumber>)> {
         OnSell::<T>::iter().collect()
     }
 }

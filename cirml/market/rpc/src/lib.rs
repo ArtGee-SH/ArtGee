@@ -8,7 +8,7 @@ use jsonrpc_derive::rpc;
 use sp_blockchain::HeaderBackend;
 use sp_runtime::{generic::BlockId, traits::Block as BlockT};
 
-use cirml_market_runtime_api::{MarketApi as MarketRuntimeApi, OnSellArtvenus};
+use cirml_market_runtime_api::{MarketApi as MarketRuntimeApi, OnSellInfo};
 
 pub struct Market<C, B> {
     client: Arc<C>,
@@ -47,7 +47,7 @@ where
     fn on_sell(&self, at: Option<<Block as BlockT>::Hash>) -> Result<serde_json::Value> {
         let api = self.client.runtime_api();
         let at = BlockId::hash(at.unwrap_or_else(|| self.client.info().best_hash));
-        let r: HashMap<ArtvenusId, OnSellArtvenus<Balance, BlockNumber>> = api
+        let r: HashMap<ArtvenusId, OnSellInfo<Balance, BlockNumber>> = api
             .on_sell(&at)
             .map(|list| list.into_iter().collect())
             .map_err(runtime_error_into_rpc_err)?;

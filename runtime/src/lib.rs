@@ -47,7 +47,7 @@ pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
 pub use cirml_market::OnSellState;
-pub type OnSellArtvenus = cirml_market::OnSellArtvenus<Balance, BlockNumber>;
+pub type OnSellInfo = cirml_market::OnSellInfo<Balance, BlockNumber>;
 
 /// An index to a block.
 pub type BlockNumber = u32;
@@ -479,7 +479,7 @@ impl_runtime_apis! {
         Balance,
         BlockNumber,
     > for Runtime {
-        fn on_sell() -> Vec<(ArtvenusId, OnSellArtvenus)> {
+        fn on_sell() -> Vec<(ArtvenusId, OnSellInfo)> {
             Market::on_sell_list()
         }
     }
