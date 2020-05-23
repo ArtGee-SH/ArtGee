@@ -26,6 +26,7 @@ sp-transaction-pool = { git = "https://github.com/paritytech/substrate.git", bra
 
 frame-support = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 frame-system = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
+frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate.git", branch = "master", default-features = false }
 frame-executive = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 
 pallet-aura = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
@@ -33,6 +34,7 @@ pallet-grandpa = { git = "https://github.com/paritytech/substrate.git", branch="
 pallet-timestamp = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-sudo = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 pallet-transaction-payment = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate.git", branch = "master", default-features = false }
 pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features = false }
 
 cirml-balances = { path = "../cirml/balances", default-features = false }
@@ -64,6 +66,7 @@ std = [
 
     "frame-support/std",
     "frame-system/std",
+    "frame-system-rpc-runtime-api/std",
     "frame-executive/std",
 
     "pallet-aura/std",
@@ -71,6 +74,7 @@ std = [
     "pallet-timestamp/std",
     "pallet-sudo/std",
     "pallet-transaction-payment/std",
+    "pallet-transaction-payment-rpc-runtime-api/std",
     "pallet-randomness-collective-flip/std",
 
     "cirml-balances/std",

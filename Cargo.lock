@@ -486,6 +486,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "ci-rpc"
+version = "0.1.0"
+dependencies = [
+ "ci-primitives",
+ "cryptoindus-runtime",
+ "frame-support",
+ "hex",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "pallet-transaction-payment-rpc",
+ "parity-scale-codec",
+ "sc-client-api",
+ "sc-service",
+ "serde_json",
+ "sp-api",
+ "sp-blockchain",
+ "sp-runtime",
+ "sp-state-machine",
+ "sp-transaction-pool",
+ "substrate-frame-rpc-system",
+]
+
+[[package]]
 name = "cirml-artists"
 version = "0.1.0"
 dependencies = [
@@ -719,8 +743,10 @@ dependencies = [
 name = "cryptoindus"
 version = "0.1.0"
 dependencies = [
+ "ci-rpc",
  "cryptoindus-runtime",
  "futures 0.3.5",
+ "jsonrpc-core",
  "log",
  "parking_lot 0.10.2",
  "sc-basic-authorship",
@@ -731,6 +757,7 @@ dependencies = [
  "sc-executor",
  "sc-finality-grandpa",
  "sc-network",
+ "sc-rpc",
  "sc-service",
  "sc-transaction-pool",
  "sp-consensus",
@@ -755,12 +782,14 @@ dependencies = [
  "frame-executive",
  "frame-support",
  "frame-system",
+ "frame-system-rpc-runtime-api",
  "pallet-aura",
  "pallet-grandpa",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
  "pallet-timestamp",
  "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
  "parity-scale-codec",
  "serde",
  "sp-api",
@@ -1119,6 +1148,15 @@ dependencies = [
  "sp-runtime",
  "sp-std",
  "sp-version",
+]
+
+[[package]]
+name = "frame-system-rpc-runtime-api"
+version = "2.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git#5a7600912b7fd50091990899e8ad93ad618f40c4"
+dependencies = [
+ "parity-scale-codec",
+ "sp-api",
 ]
 
 [[package]]
@@ -2919,6 +2957,24 @@ dependencies = [
  "parity-scale-codec",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-transaction-payment-rpc"
+version = "2.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git#5a7600912b7fd50091990899e8ad93ad618f40c4"
+dependencies = [
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "parity-scale-codec",
+ "serde",
+ "sp-api",
+ "sp-blockchain",
+ "sp-core",
+ "sp-rpc",
+ "sp-runtime",
 ]
 
 [[package]]
@@ -5419,6 +5475,27 @@ version = "2.0.0-dev"
 source = "git+https://github.com/paritytech/substrate.git#5a7600912b7fd50091990899e8ad93ad618f40c4"
 dependencies = [
  "platforms",
+]
+
+[[package]]
+name = "substrate-frame-rpc-system"
+version = "2.0.0-dev"
+source = "git+https://github.com/paritytech/substrate.git#5a7600912b7fd50091990899e8ad93ad618f40c4"
+dependencies = [
+ "frame-system-rpc-runtime-api",
+ "futures 0.3.5",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "log",
+ "parity-scale-codec",
+ "sc-client-api",
+ "serde",
+ "sp-api",
+ "sp-blockchain",
+ "sp-core",
+ "sp-runtime",
+ "sp-transaction-pool",
 ]
 
 [[package]]
