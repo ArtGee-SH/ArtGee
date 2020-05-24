@@ -81,7 +81,7 @@ decl_module! {
         fn deposit_event() = default;
 
         #[weight=0]
-        pub fn seal(origin, venus_id: ArtvenusId<T>, #[compact] price: T::Balance) -> DispatchResult {
+        pub fn sell(origin, venus_id: ArtvenusId<T>, #[compact] price: T::Balance) -> DispatchResult {
             let who = ensure_signed(origin)?;
             Self::sell_impl(who, venus_id, price)?;
             Ok(())
