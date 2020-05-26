@@ -11,9 +11,9 @@ jsonrpc-core = "14.0.3"
 jsonrpc-core-client = "14.0.5"
 jsonrpc-derive = "14.0.3"
 
-sp-api = { git = "https://github.com/paritytech/substrate.git", branch="master" }
-sp-runtime = { git = "https://github.com/paritytech/substrate.git", branch="master" }
-sp-blockchain = { git = "https://github.com/paritytech/substrate.git", branch="master" }
+sp-api = { git = "https://github.com/paritytech/substrate.git", tag = "v2.0.0-rc2" }
+sp-runtime = { git = "https://github.com/paritytech/substrate.git", tag = "v2.0.0-rc2" }
+sp-blockchain = { git = "https://github.com/paritytech/substrate.git", tag = "v2.0.0-rc2" }
 
 ci-primitives = { path = "../../../primitives" }
 cirml-artists-runtime-api = { path = "../runtime-api" }

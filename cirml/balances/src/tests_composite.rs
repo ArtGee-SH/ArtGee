@@ -21,15 +21,11 @@
 
 use crate::{decl_tests, tests::CallWithDispatchInfo, GenesisConfig, Module, Trait};
 use frame_support::traits::Get;
-use frame_support::weights::{DispatchInfo, Weight};
+use frame_support::weights::{DispatchInfo, IdentityFee, Weight};
 use frame_support::{impl_outer_origin, parameter_types};
 use sp_core::H256;
 use sp_io;
-use sp_runtime::{
-    testing::Header,
-    traits::{ConvertInto, IdentityLookup},
-    Perbill,
-};
+use sp_runtime::{testing::Header, traits::IdentityLookup, Perbill};
 use std::cell::RefCell;
 
 use frame_system as system;
@@ -73,6 +69,7 @@ impl frame_system::Trait for Test {
     type DbWeight = ();
     type BlockExecutionWeight = ();
     type ExtrinsicBaseWeight = ();
+    type MaximumExtrinsicWeight = MaximumBlockWeight;
     type MaximumBlockLength = MaximumBlockLength;
     type AvailableBlockRatio = AvailableBlockRatio;
     type Version = ();
@@ -88,7 +85,7 @@ impl pallet_transaction_payment::Trait for Test {
     type Currency = Module<Test>;
     type OnTransactionPayment = ();
     type TransactionByteFee = TransactionByteFee;
-    type WeightToFee = ConvertInto;
+    type WeightToFee = IdentityFee<u64>;
     type FeeMultiplierUpdate = ();
 }
 impl Trait for Test {
