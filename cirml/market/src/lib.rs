@@ -60,9 +60,9 @@ pub enum OnSellState {
 #[derive(Encode, Decode, Clone, PartialEq, Eq, RuntimeDebug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct OnSellInfo<Balance, BlockNumber> {
-    state: OnSellState,
-    price: Balance,
-    time: BlockNumber,
+    pub state: OnSellState,
+    pub price: Balance,
+    pub time: BlockNumber,
 }
 
 decl_storage! {

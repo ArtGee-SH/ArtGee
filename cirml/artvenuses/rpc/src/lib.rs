@@ -28,17 +28,17 @@ impl<C, B> Artvenuses<C, B> {
 
 #[rpc]
 pub trait ArtvenusesApi<BlockHash, AccountId, ArtvenusId> {
-    #[rpc(name = "artvenuses")]
+    #[rpc(name = "artvenuses_getArtvenuses")]
     fn artvenuses(&self, at: Option<BlockHash>) -> Result<Vec<ArtvenusId>>;
 
-    #[rpc(name = "artvenusesByArtist")]
+    #[rpc(name = "artvenuses_getArtvenusesByArtist")]
     fn artvenuses_of_artist(
         &self,
         artist_id: ArtistId,
         at: Option<BlockHash>,
     ) -> Result<BTreeMap<u64, ArtvenusId>>;
 
-    #[rpc(name = "artvenusesByHolder")]
+    #[rpc(name = "artvenuses_getArtvenusesByHolder")]
     fn artvenuses_of_holder(
         &self,
         account_id: AccountId,

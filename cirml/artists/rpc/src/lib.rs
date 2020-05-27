@@ -28,7 +28,7 @@ impl<C, B> Artists<C, B> {
 
 #[rpc]
 pub trait ArtistsApi<BlockHash, AccountId> {
-    #[rpc(name = "artists")]
+    #[rpc(name = "artists_getArtists")]
     fn artists(&self, at: Option<BlockHash>) -> Result<BTreeMap<ArtistId, AccountId>>;
 }
 

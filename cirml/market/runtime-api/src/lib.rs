@@ -5,7 +5,7 @@ use codec::Codec;
 use sp_std::prelude::Vec;
 
 // re-export
-pub use cirml_market::OnSellInfo;
+pub use cirml_market::{OnSellInfo, OnSellState};
 
 sp_api::decl_runtime_apis! {
     pub trait MarketApi<ArtvenusId, Balance, BlockNumber> where
