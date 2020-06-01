@@ -4,7 +4,7 @@
 
 # Introduction
 
-CryptoIndusis a marketplace to collect and trade unique, single-edition digital artworks.
+CryptoIndus is a marketplace to collect and trade unique, single-edition digital artworks.
 
 We pay more attention to the runtime upgrade provided by the substrate, which can facilitate the rapid iteration of the product itself. More importantly, the community-based governance mechanism and tools based on the substrate make us more confident to make products that meet user needs and fully link user groups.
 Each artwork on CryptoIndus is a digital collectible – a digital object secured by cryptography and tracked on the blockchain. Empowering artists with a platform to showcase and sell their work securely supported with a public blockchain solution.
