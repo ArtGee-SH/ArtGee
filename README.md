@@ -6,14 +6,27 @@
 
 CryptoIndus is a marketplace to collect and trade unique, single-edition digital artworks.
 
-We pay more attention to the runtime upgrade provided by the substrate, which can facilitate the rapid iteration of the product itself. More importantly, the community-based governance mechanism and tools based on the substrate make us more confident to make products that meet user needs and fully link user groups.
-Each artwork on CryptoIndus is a digital collectible – a digital object secured by cryptography and tracked on the blockchain. Empowering artists with a platform to showcase and sell their work securely supported with a public blockchain solution.
+We pay more attention to the runtime upgrade provided by the substrate, which can facilitate the rapid iteration of the 
+product itself. More importantly, the community-based governance mechanism and tools based on the substrate make us more
+confident to make products that meet user needs and fully link user groups.
+
+Each artwork on CryptoIndus is a digital collectible – a digital object secured by cryptography and tracked on the 
+blockchain. Empowering artists with a platform to showcase and sell their work securely supported with a public 
+blockchain solution.
 
 # Overview
 
-# Building
+The next wave of Internet business models will come from the crypto world. The creator can bypass the gatekeeper through
+the token model and let the fans directly benefit, instead of attracting the audience through a centralized gatekeeper 
+who collects high rents and sets self-service rules. Each new business model helps to provide creators with a new set of
+digital services and new sources of income. The encryption token model is applied to CRYPTOINDUS art trading activities,
+and encryption technology should benefit more people.
 
-## NOTE
+Artists create digital artwork that they can tokenise via CRYPTOINDUS. All artwork files are held on IPFS (a distributed
+storage solution) in future, these assets are given unique identifiers which can be tracked for chain-of-custody and 
+provenance.
+
+# Building
 
 _notice: this guide just for linux_
 
