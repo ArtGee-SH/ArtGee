@@ -1,6 +1,15 @@
-# cryptoindus
+<p align="center">
+  <img src="https://cryptoindus.xyz/fav.png">
+</p>
 
+<div align="center">
+
+[![Substrate version](https://img.shields.io/badge/Substrate-2.0.0-brightgreen?logo=Parity%20Substrate)](https://substrate.dev/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
+
+</div>
+
+# cryptoindus
 
 # Introduction
 
