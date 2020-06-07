@@ -5,7 +5,7 @@
 <div align="center">
 
 [![Substrate version](https://img.shields.io/badge/Substrate-2.0.0-brightgreen?logo=Parity%20Substrate)](https://substrate.dev/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-GPL3%2FApache2-blue)](LICENSE)
 
 </div>
 
