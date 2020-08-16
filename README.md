@@ -1,5 +1,4 @@
-<p align="center">
-  <img src="https://cryptoindus.xyz/fav.png">
+
 </p>
 
 <div align="center">
